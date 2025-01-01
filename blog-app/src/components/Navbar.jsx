@@ -54,6 +54,9 @@ const Navbar = () => {
             </button>
           </Link>
         </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
     </div>
   );
