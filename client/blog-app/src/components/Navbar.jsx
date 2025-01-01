@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-16 md:h-20 flex items-center justify-between">
+    <div className="w-full h-16 md:h-20 flex items-center justify-between ">
       {/* Logo */}
       <Link to="/" className="flex items-center gap-4 text-2xl">
         <IKImage
@@ -42,14 +42,14 @@ const Navbar = () => {
       </div>
       {/* Desktop Menu */}
 
-      <div className="hidden md:flex items-center gap-8 lg:gap-12">
+      <div className="hidden  md:flex items-center gap-8 lg:gap-12 ">
         <Link to="/">Home</Link>
         <Link to="/">Trending</Link>
         <Link to="/">Most Popular</Link>
         <Link to="/">About</Link>
         <SignedOut>
           <Link to="/login">
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-3xl">
+            <button className="bg-sky-500 text-white px-4 py-2 rounded-3xl">
               Login
             </button>
           </Link>
