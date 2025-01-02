@@ -1,6 +1,7 @@
 
 import User from "../models/user.model.js";
-
+import Post from "../models/post.model.js";
+import Comment from "../models/comment.model.js";
 import { Webhook } from "svix";
 
 export const clerkWebHook = async (req, res) => {
@@ -23,7 +24,6 @@ export const clerkWebHook = async (req, res) => {
     }
 
 
-    // console.log(evt.data);
 
     if (evt.type === 'user.created') {
 
@@ -35,6 +35,16 @@ export const clerkWebHook = async (req, res) => {
         });
 
         await newUser.save();
+    }
+    if (evt.type === "user.deleted") {
+        const deletedUser = await User.findOneAndDelete({
+            clerkUserId: evt.data.id,
+        });
+
+        console.log(deletedUser);
+
+        await Post.deleteMany({ user: deletedUser._id });
+        await Comment.deleteMany({ user: deletedUser._id });
     }
 
     return res.status(200).json({
