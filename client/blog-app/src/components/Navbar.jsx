@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IKImage } from "imagekitio-react";
 import { Link } from "react-router-dom";
 import {
   SignedIn,
+  useAuth,
   SignedOut,
   SignInButton,
   UserButton,
@@ -10,6 +11,12 @@ import {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { getToken } = useAuth();
+  useEffect(() => {
+    getToken().then((token) => {
+      console.log(token);
+    });
+  }, []);
 
   const toggleMenu = () => {
     setOpen(!open);
