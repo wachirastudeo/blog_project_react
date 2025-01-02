@@ -6,6 +6,7 @@ import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 
 const app = express();
+app.use(express.json());
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
