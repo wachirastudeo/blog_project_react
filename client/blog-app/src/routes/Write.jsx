@@ -1,32 +1,48 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { useAuth, useUser } from "@clerk/clerk-react";
-import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+
+import ReactQuill from "react-quill-new";
+import { useNavigate } from "react-router";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Write = () => {
   const { isLoaded, isSignedIn } = useUser();
   const [value, setValue] = useState("");
+  const [cover, setCover] = useState("");
+  const [img, setImg] = useState("");
+  const [video, setVideo] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    img && setValue((prev) => prev + `<p><image src="${img.url}"/></p>`);
+  }, [img]);
+
+  useEffect(() => {
+    video &&
+      setValue(
+        (prev) => prev + `<p><iframe class="ql-video" src="${video.url}"/></p>`
+      );
+  }, [video]);
+  const navigate = useNavigate();
 
   const { getToken } = useAuth();
   const mutation = useMutation({
     mutationFn: async (newPost) => {
       const token = await getToken(); // ดึง token
-      const response = axios.post(
-        `${import.meta.env.VITE_API_URL}/posts`,
-        newPost,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // แนบ token ใน header
-          },
-        }
-      );
-      return response.data;
+      return axios.post(`${import.meta.env.VITE_API_URL}/posts`, newPost, {
+        headers: {
+          Authorization: `Bearer ${token}`, // แนบ token ใน header
+        },
+      });
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
       console.log("Success!");
+      toast.success("Post has been created");
+      navigate(`/${res.data.slug}`);
     },
     onError: (error) => {
       console.error("Error:", error);
@@ -36,8 +52,8 @@ const Write = () => {
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
-  if (!isSignedIn) {
-    return <div>You must be signed in</div>;
+  if (isLoaded && !isSignedIn) {
+    return <div className="">You should login!</div>;
   }
 
   const handleSubmit = (e) => {

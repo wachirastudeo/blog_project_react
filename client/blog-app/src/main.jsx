@@ -8,6 +8,7 @@ import LoginPage from "./routes/LoginPage.jsx";
 import Register from "./routes/Register.jsx";
 import SinglePostPage from "./routes/SinglePostPage.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { ToastContainer } from "react-toastify";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayouts from "./layouts/MainLayouts.jsx";
@@ -56,6 +57,7 @@ createRoot(document.getElementById("root")).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <ToastContainer position="bottom-right" />
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>
