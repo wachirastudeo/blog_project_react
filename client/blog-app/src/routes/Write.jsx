@@ -8,28 +8,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { IKContext, IKUpload } from "imagekitio-react";
+import Upload from "../components/Upload";
 
-const authenticator = async () => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/posts/upload-auth`
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Request failed with status ${response.status}: ${errorText}`
-      );
-    }
-
-    const data = await response.json();
-    const { signature, expire, token } = data;
-    return { signature, expire, token };
-  } catch (error) {
-    throw new Error(`Authentication request failed: ${error.message}`);
-  }
-};
 const Write = () => {
   const { isLoaded, isSignedIn } = useUser();
   const [value, setValue] = useState("");
@@ -81,6 +61,7 @@ const Write = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = {
+      img: cover.filePath || "",
       title: formData.get("title"),
       desc: formData.get("desc"),
       catagory: formData.get("catagory"),
@@ -90,39 +71,16 @@ const Write = () => {
     mutation.mutate(data);
   };
 
-  const onError = (err) => {
-    // console.log(err);
-    toast.error("image upload failed");
-  };
-  const onSuccess = (res) => {
-    console.log(res);
-    setCover(res);
-  };
-
-  const onUploadProcess = (progress) => {
-    console.log(progress);
-    setProgress(Math.round(progress.loaded / progress.total) * 100);
-  };
   return (
     <div className="h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] flex flex-col gap-6">
       <h1 className="text-cl font-light">Create a New Post</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 flex-1 mb-6">
-        {/* <button className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white">
-          Add a cover image
-        </button> */}
-        <IKContext
-          publicKey={import.meta.env.VITE_IK_PUBLIC_KEY}
-          urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
-          authenticator={authenticator}
-        >
-          <IKUpload
-            // fileName="test-upload"
-            useUniqueFileName
-            onError={onError}
-            onSuccess={onSuccess}
-            onUploadProgress={onUploadProcess}
-          />
-        </IKContext>
+        <Upload type="image" setCover={setCover} setProgress={setProgress}>
+          <button className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white">
+            Add a cover image
+          </button>
+        </Upload>
+
         <input
           type="text"
           name="title"
