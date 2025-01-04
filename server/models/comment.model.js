@@ -15,6 +15,7 @@ const commentSchema = new Schema({
 
     desc: {
         type: String,
+        required: true
     },
 
 
