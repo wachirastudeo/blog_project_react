@@ -64,12 +64,12 @@ export const deletePost = async (req, res) => {
 };
 
 const imageKit = new ImageKit({
-    urlEndpoint: '<YOUR_IMAGEKIT_URL_ENDPOINT>',
-    publicKey: '<YOUR_IMAGEKIT_PUBLIC_KEY>',
-    privateKey: '<YOUR_IMAGEKIT_PRIVATE_KEY>'
+    urlEndpoint: process.env.urlEndpoint,
+    publicKey: process.env.publicKey,
+    privateKey: process.env.privateKey,
 });
 
 export const uploadAuth = async (req, res) => {
-    const result = imagekit.getAuthenticationParameters();
+    const result = imageKit.getAuthenticationParameters();
     res.send(result);
 };
