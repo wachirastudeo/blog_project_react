@@ -1,7 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
+
 import { useAuth, useUser } from "@clerk/clerk-react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 
@@ -9,16 +10,26 @@ const Write = () => {
   const { isLoaded, isSignedIn } = useUser();
   const [value, setValue] = useState("");
 
-  const { getToken } = useAuth;
-
+  const { getToken } = useAuth();
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      const token = await getToken();
-      return axios.post("/todos", newPost, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = await getToken(); // ดึง token
+      const response = axios.post(
+        `${import.meta.env.VITE_API_URL}/posts`,
+        newPost,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // แนบ token ใน header
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      console.log("Success!");
+    },
+    onError: (error) => {
+      console.error("Error:", error);
     },
   });
 
@@ -39,6 +50,7 @@ const Write = () => {
       content: value,
     };
     console.log(data);
+    mutation.mutate(data);
   };
 
   return (
@@ -87,7 +99,10 @@ const Write = () => {
             onChange={setValue}
           />
         </div>
-        <button className="bg-blue-800 text-white font-medium rounded-xl  p-2 w-36 ">
+        <button
+          type="submit"
+          className="bg-blue-800 text-white font-medium rounded-xl  p-2 w-36 "
+        >
           Send
         </button>
       </form>
