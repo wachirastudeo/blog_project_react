@@ -1,6 +1,7 @@
 
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import ImageKit from "imagekit";
 
 export const getPosts = async (req, res) => {
     const posts = await Post.find();
@@ -60,4 +61,15 @@ export const deletePost = async (req, res) => {
     const deletePost = await Post.findOneAndDelete({ _id: req.params.id, slug, user: user._id });
     res.status(200).json("post has deleted");
 
-};    
+};
+
+const imageKit = new ImageKit({
+    urlEndpoint: '<YOUR_IMAGEKIT_URL_ENDPOINT>',
+    publicKey: '<YOUR_IMAGEKIT_PUBLIC_KEY>',
+    privateKey: '<YOUR_IMAGEKIT_PRIVATE_KEY>'
+});
+
+export const uploadAuth = async (req, res) => {
+    const result = imagekit.getAuthenticationParameters();
+    res.send(result);
+};
