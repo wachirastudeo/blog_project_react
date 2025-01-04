@@ -112,12 +112,25 @@ const Write = () => {
           placeholder="A short description"
         ></textarea>
         <div className="flex flex-1 ">
+          <div className="flex flex-col gap-2 mr-2">
+            <Upload type="image" setCover={setImg} setProgress={setProgress}>
+              <button className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white">
+                🌆
+              </button>
+            </Upload>
+
+            <Upload type="video" setCover={setVideo} setProgress={setProgress}>
+              <button className="w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white">
+                ▶️
+              </button>
+            </Upload>
+          </div>
           <ReactQuill
-            name="content"
             theme="snow"
             className="flex-1 rounded-xl bg-white shadow-md"
             value={value}
             onChange={setValue}
+            readOnly={0 < progress && progress < 100}
           />
         </div>
         <button
