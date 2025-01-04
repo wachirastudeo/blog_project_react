@@ -117,10 +117,12 @@ const Write = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-800 text-white font-medium rounded-xl  p-2 w-36 "
+          disabled={mutation.isPending}
+          className="bg-blue-800 text-white font-medium rounded-xl  p-2 w-36 disabled:bg-sky-400 disabled:cursor-not-allowed"
         >
-          Send
+          {mutation.isPending ? "Loading..." : "Send"}
         </button>
+        {mutation.isError && <div>Error: {mutation.error.message}</div>}
       </form>
     </div>
   );

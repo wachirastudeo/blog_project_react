@@ -15,7 +15,6 @@ const PostList = () => {
   if (error) return "An error has occurred: " + error.message;
 
   if (isPending) return "Loading...";
-  console.log(data);
   return (
     <div className="">
       <Postlistitem />
