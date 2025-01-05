@@ -5,7 +5,8 @@ import HomePage from "./routes/Homepage.jsx";
 import PostsListPage from "./routes/PostlistPage.jsx";
 import Write from "./routes/Write.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
-import Register from "./routes/Register.jsx";
+import RegisterPage from "./routes/RegisterPage.jsx";
+
 import SinglePostPage from "./routes/SinglePostPage.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { ToastContainer } from "react-toastify";
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/register",
-        element: <Register />,
+        element: <RegisterPage />,
       },
     ],
   },
