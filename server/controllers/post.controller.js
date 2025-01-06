@@ -122,7 +122,7 @@ export const deletePost = async (req, res) => {
     if (!clerkUserId) {
         return res.status(401).json("Not authenticated!");
     }
-
+    //check admin can delete any post
     const role = req.auth.sessionClaims?.metadata?.role || "user";
 
     if (role === "admin") {
