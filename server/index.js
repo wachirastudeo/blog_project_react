@@ -5,7 +5,7 @@ import userRouter from "./routes/user.route.js";
 import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 import webhookRouter from "./routes/webhook.route.js";
-import { clerkMiddleware, requireAuth } from "@clerk/express";
+import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 
 const app = express();
@@ -23,8 +23,6 @@ app.use(function (req, res, next) {
     );
     next();
 });
-
-
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);

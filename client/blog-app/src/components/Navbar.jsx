@@ -74,7 +74,7 @@ const Navbar = () => {
         <SignedOut>
           <Link to="/login">
             <button className="py-2 px-4 rounded-3xl bg-sky-800 text-white">
-              Login 👋
+              Login
             </button>
           </Link>
         </SignedOut>
