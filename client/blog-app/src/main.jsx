@@ -13,7 +13,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MainLayout from "./layouts/MainLayouts.jsx";
-
+import "@fontsource/kanit";
+import "@fontsource/kanit/400.css"; // Normal
+import "@fontsource/kanit/700.css"; // Bold
 const queryClient = new QueryClient();
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
