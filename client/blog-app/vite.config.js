@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   css: {
     devSourcemap: false,  // ปิดการโหลด source map ของ CSS ตอน dev
-  }
+  },
+  build: {
+    outDir: 'dist', // กำหนดโฟลเดอร์ที่ใช้เก็บไฟล์ build
+  },
 });
