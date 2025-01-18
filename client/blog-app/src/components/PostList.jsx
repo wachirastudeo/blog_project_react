@@ -7,16 +7,25 @@ import { useSearchParams } from "react-router-dom";
 const fetchPosts = async (pageParam, searchParams) => {
   const searchParamsObj = Object.fromEntries([...searchParams]);
 
-  console.log(searchParamsObj);
+  const token = localStorage.getItem("authToken"); // รับ token จาก localStorage หรือที่อื่น
 
-  const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts`, {
-    params: { page: pageParam, limit: 10, ...searchParamsObj },
-  });
-  return res.data;
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // ส่ง token ใน header
+      },
+      params: { page: pageParam, limit: 10, ...searchParamsObj },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw error;
+  }
 };
 
 const PostList = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const {
     data,
@@ -34,10 +43,7 @@ const PostList = () => {
       lastPage.hasMore ? pages.length + 1 : undefined,
   });
 
-  // if (status === "loading") return "Loading...";
   if (isFetching) return "Loading...";
-
-  // if (status === "error") return "Something went wrong!";
   if (error) return "Something went wrong!";
 
   const allPosts = data?.pages?.flatMap((page) => page.posts) || [];
