@@ -11,6 +11,7 @@ import cors from "cors";
 const app = express();
 
 app.use(cors(process.env.CLIENT_URL));
+
 app.use(clerkMiddleware());
 app.use("/webhooks", webhookRouter);
 app.use(express.json());
