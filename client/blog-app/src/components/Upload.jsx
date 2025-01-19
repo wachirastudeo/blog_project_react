@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
-import { useRef } from "react";
 import { IKContext, IKUpload } from "imagekitio-react";
+import { useRef } from "react";
+import { toast } from "react-toastify";
 
 const authenticator = async () => {
   try {
@@ -22,43 +22,43 @@ const authenticator = async () => {
     throw new Error(`Authentication request failed: ${error.message}`);
   }
 };
-const Upload = ({ children, type, setProgress, setCover }) => {
+
+const Upload = ({ children, type, setProgress, setData }) => {
   const ref = useRef(null);
+
   const onError = (err) => {
-    // console.log(err);
-    toast.error("image upload failed");
+    console.log(err);
+    toast.error("Image upload failed!");
   };
   const onSuccess = (res) => {
     console.log(res);
-    setCover(res);
+    setData(res);
   };
-  const onUploadProcess = (progress) => {
+  const onUploadProgress = (progress) => {
     console.log(progress);
-    setProgress(Math.round(progress.loaded / progress.total) * 100);
+    setProgress(Math.round((progress.loaded / progress.total) * 100));
   };
 
   return (
-    <>
-      <IKContext
-        publicKey={import.meta.env.VITE_IK_PUBLIC_KEY}
-        urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
-        authenticator={authenticator}
-      >
-        <IKUpload
-          // fileName="test-upload"
-          useUniqueFileName
-          onError={onError}
-          onSuccess={onSuccess}
-          onUploadProgress={onUploadProcess}
-          className="hidden"
-          ref={ref}
-          accept={`${type}/*`}
-        />
-        <div className="cursor-pointer" onClick={() => ref.current.click()}>
-          {children}
-        </div>
-      </IKContext>
-    </>
+    <IKContext
+      publicKey={import.meta.env.VITE_IK_PUBLIC_KEY}
+      urlEndpoint={import.meta.env.VITE_IK_URL_ENDPOINT}
+      authenticator={authenticator}
+    >
+      <IKUpload
+        useUniqueFileName
+        onError={onError}
+        onSuccess={onSuccess}
+        onUploadProgress={onUploadProgress}
+        className="hidden"
+        ref={ref}
+        accept={`${type}/*`}
+      />
+      <div className="cursor-pointer" onClick={() => ref.current.click()}>
+        {children}
+      </div>
+    </IKContext>
   );
 };
+
 export default Upload;
